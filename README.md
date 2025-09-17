@@ -16,6 +16,7 @@ An advanced, modular diagram editor scaffold featuring:
 - Side panel / context menu
 - Manual snapshots archive (distinct from undo)
 - Theming & responsive layout
+- **Portal integration for multi-app workflow**
 
 ## Getting Started
 
@@ -24,7 +25,53 @@ An advanced, modular diagram editor scaffold featuring:
 python -m http.server 8080
 # Navigate to
 http://localhost:8080/
+# Or use the portal interface
+http://localhost:8080/portal.html
 ```
+
+## Portal Integration
+
+The portal interface (`portal.html`) provides a unified workspace for integrating VISOPLUS with Steps Designer applications.
+
+### Portal Message Contract
+
+| Message Type | Direction | Purpose |
+|--------------|-----------|---------|
+| `portal:getDesignerState` | Portal → VISOPLUS | Request current diagram state |
+| `portal:designerState` | VISOPLUS → Portal | Export diagram JSON |
+| `portal:getHarnessState` | Portal → Steps | Request steps/workflow state |
+| `portal:harnessState` | Steps → Portal | Export steps as VISOPLUS-compatible JSON |
+| `portal:applyHarnessState` | Portal → VISOPLUS | Import steps data into diagram |
+| `portal:applyDesignerState` | Portal → Steps | Import diagram data into steps |
+
+### Steps Designer Integration
+
+To integrate your Steps Designer app:
+
+1. Include the adapter in your `StepsDesigner/index.html`:
+   ```html
+   <script type="module" src="./steps-portal-adapter.js"></script>
+   ```
+
+2. Expose your data model as `window.STEPS`:
+   ```javascript
+   window.STEPS = {
+     nodes: [{ id, label, x?, y?, w?, h?, type?, style? }],
+     edges: [{ id, from, to, label?, points?, style? }]
+   };
+   ```
+
+3. The adapter will automatically handle:
+   - Converting your steps to VISOPLUS-compatible JSON
+   - Auto-layout if coordinates are missing
+   - Shape type mapping (decision→diamond, terminator→pill, etc.)
+
+### Features
+
+- **One-way sync**: Steps → Shapes pulls workflow data into diagram editor
+- **Auto-pull**: Switching to Shapes tab automatically requests latest Steps state
+- **Defensive coding**: Graceful handling of missing components
+- **Type mapping**: Intelligent conversion between step types and diagram shapes
 
 ## Project Structure
 
