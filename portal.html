@@ -113,8 +113,8 @@
     </header>
     <main>
         <section id="paneDesigner" class="pane active" role="tabpanel" aria-labelledby="tabDesignerBtn">
-            <!-- Adjust path if your VISOPLUS folder is named differently -->
-            <iframe id="designerFrame" src="./VISOPLUS/index.html"></iframe>
+            <!-- VISOPLUS app is at repo root, not in a subfolder -->
+            <iframe id="designerFrame" src="./index.html"></iframe>
         </section>
         <section id="paneSteps" class="pane" role="tabpanel" aria-labelledby="tabStepsBtn">
             <!-- Option A: Steps Designer (the mermaid app you shared) -->
@@ -127,7 +127,7 @@
     <div class="status" id="portalStatus">Ready</div>
 
     <!-- If you’re using the messaging bridge, keep this file at project root -->
-    <script src="./portal-bridge.js"></script>
+    <script src="./Portal-bridge.js"></script>
     <script>
         // Minimal tab wiring if you don’t use portal-bridge.js yet
         const $ = (id) => document.getElementById(id);
