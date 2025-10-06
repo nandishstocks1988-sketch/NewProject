@@ -31,6 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (paneDesigner) paneDesigner.classList.toggle('active', isDesigner);
         if (paneSteps) paneSteps.classList.toggle('active', !isDesigner);
+
+        // Auto-pull Steps state when switching to designer tab for current preview
+        if (isDesigner && stepsFrame?.contentWindow) {
+            setTimeout(() => {
+                setStatus('Auto-requesting Steps state for current preview...');
+                postToSteps({ type: 'portal:getHarnessState' });
+            }, 100); // Small delay to ensure tab switch is complete
+        }
     }
 
     if (tabDesignerBtn) tabDesignerBtn.addEventListener('click', () => switchTab('designer'));
